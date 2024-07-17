@@ -24,6 +24,7 @@ const Summary = () => {
             toast.error("Something went wrong.")
         }
     }, [searchParams, removeAll])
+    
     const totalPrice = items.reduce((total, item) => {
         return total + Number(item.price);
     }, 0);
@@ -64,7 +65,7 @@ const Summary = () => {
                     <Currency value={totalPrice}/>
                 </div>
             </div>
-            <Button onClick={onCheckOut} className="w-full mt-6">
+            <Button disabled={items.length === 0} onClick={onCheckOut} className="w-full mt-6">
                 Checkout
             </Button>
         </div>
