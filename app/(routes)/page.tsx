@@ -6,12 +6,8 @@ import ProductList from "@/components/product-list";
 
 export const revalidate = 0;
 
-interface HomePageProps {
-    billboardId: string;
-}
 
-
-const HomePage = async ({ billboardId }: HomePageProps) => {
+const HomePage = async () => {
     const products = await getProducts({ isFeatured: true });
     const billboard = await getBillboard("aabbb580-c202-4aa6-9552-6f2703c9525d");
     
