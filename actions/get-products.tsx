@@ -11,20 +11,28 @@ interface Query {
     isFeatured?: boolean
 }
 
-const getProducts = async (query: Query): Promise<Product[]> => {   
-    const url = qs.stringifyUrl({
-        url: URL,
-        query: {
-            colorId: query.colorId,
-            sizeId: query.sizeId,
-            categoryId: query.categoryId,
-            isFeatured: query.isFeatured
+const getProducts = async (query: Query): Promise<Product[]> => {
+    try {
+        const url = qs.stringifyUrl({
+            url: URL,
+            query: {
+                colorId: query.colorId,
+                sizeId: query.sizeId,
+                categoryId: query.categoryId,
+                isFeatured: query.isFeatured
+            }
+        })
+
+        const res = await fetch(url);
+
+        if (!res.ok) {
+            return [];
         }
-    })
 
-    const res = await fetch(url);
-
-    return res.json();
+        return res.json();
+    } catch (error) {
+        return [];
+    }
 }
 
 export default getProducts;
