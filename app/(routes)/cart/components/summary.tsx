@@ -15,32 +15,35 @@ const Summary = () => {
     const removeAll = useCart((state) => state.removeAll);
 
     useEffect(() => {
-        if(searchParams.get("success")) {
+        if (searchParams.get("success")) {
             toast.success("Payment completed.")
             removeAll();
         }
 
-        if(searchParams.get("canceled")) {
+        if (searchParams.get("canceled")) {
             toast.error("Something went wrong.")
         }
     }, [searchParams, removeAll])
-    
+
     const totalPrice = items.reduce((total, item) => {
         return total + Number(item.price);
     }, 0);
 
     const onCheckOut = async () => {
-        const response = await axios.post(`${process.env.
-            NEXT_PUBLIC_API_URL}/checkout`, {
-            productIds: items.map((item) => item.id)
-        })
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
+                productIds: items.map((item) => item.id)
+            });
 
-        window.location = response.data.url;
+            window.location = response.data.url;
+        } catch (error) {
+            toast.error("Something went wrong.");
+        }
     }
 
-    
 
-    return(
+
+    return (
         <div
             className="
             mt-16
@@ -62,7 +65,7 @@ const Summary = () => {
                     <div className="text-base font-medium text-gray-900">
                         Order total
                     </div>
-                    <Currency value={totalPrice}/>
+                    <Currency value={totalPrice} />
                 </div>
             </div>
             <Button disabled={items.length === 0} onClick={onCheckOut} className="w-full mt-6">
